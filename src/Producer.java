@@ -1,6 +1,9 @@
 import java.util.Random;
 
 public class Producer implements Runnable {
+    final int TOTAL_PRODUCTION = 1000000;
+    final int UPDATE_PERIOD = 100000;
+
     final Random random = new Random();
     BoundedBuffer buffer;
     double bufferValueCounter = 0;
@@ -10,18 +13,18 @@ public class Producer implements Runnable {
         this.buffer = buffer;
     }
 
-    private double produce() {
+    double produce() {
         double product = random.nextDouble();
         bufferValueCounter += product;
         return product;
     }
 
-    private void writeToBuffer() throws InterruptedException {
+    void writeToBuffer() throws InterruptedException {
         buffer.write(produce());
     }
 
-    private void printUpdate(int i) {
-        if ((i > 0) && (i % 1e5 == 0)) {
+    void printUpdate(int i) {
+        if ((i > 0) && (i % UPDATE_PERIOD == 0)) {
             System.out.printf("Producer: Generated %,d items, Cumulative value of generated items=%.3f\n",
                     i, bufferValueCounter);
         }
@@ -30,7 +33,7 @@ public class Producer implements Runnable {
     @Override
     public void run() {
         try {
-            for (int i = 0; i < 1e6; i++) {
+            for (int i = 0; i < TOTAL_PRODUCTION; i++) {
                 printUpdate(i);
                 writeToBuffer();
             }
