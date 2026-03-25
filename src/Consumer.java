@@ -21,7 +21,7 @@ public class Consumer implements Runnable {
     }
 
     void printUpdate(int i) {
-        if ((i > 0) && (i % UPDATE_PERIOD == 0)) {
+        if (i % UPDATE_PERIOD == 0) {
             System.out.printf("Consumer: Consumed %,d items, Cumulative value of consumed items=%.3f\n",
                     i, bufferValueCounter);
         }
@@ -30,9 +30,9 @@ public class Consumer implements Runnable {
     @Override
     public void run() {
         try {
-            for (int i = 0; i < TOTAL_CONSUMPTION; i++) {
-                printUpdate(i);
+            for (int i = 1; i <= TOTAL_CONSUMPTION; i++) {
                 readFromBuffer();
+                printUpdate(i);
             }
         } catch (InterruptedException e) {
             System.err.println("ERROR: thread was interrupted.");

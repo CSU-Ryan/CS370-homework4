@@ -26,7 +26,7 @@ public class Producer implements Runnable {
     }
 
     void printUpdate(int i) {
-        if ((i > 0) && (i % UPDATE_PERIOD == 0)) {
+        if (i % UPDATE_PERIOD == 0) {
             System.out.printf("Producer: Generated %,d items, Cumulative value of generated items=%.3f\n",
                     i, bufferValueCounter);
         }
@@ -35,9 +35,9 @@ public class Producer implements Runnable {
     @Override
     public void run() {
         try {
-            for (int i = 0; i < TOTAL_PRODUCTION; i++) {
-                printUpdate(i);
+            for (int i = 1; i <= TOTAL_PRODUCTION; i++) {
                 writeToBuffer();
+                printUpdate(i);
             }
         } catch (InterruptedException e) {
             System.err.println("ERROR: thread was interrupted.");
