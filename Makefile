@@ -1,5 +1,5 @@
 SRC_DIR := src
-OUT_DIR := out
+OUT_DIR := .
 JC := javac
 FLAGS := -cp $(SRC_DIR)/ -d $(OUT_DIR)/
 
@@ -10,4 +10,4 @@ build:
 	$(JC) $(FLAGS) $(SRC_DIR)/*.java
 
 clean:
-	rm -rf $(OUT_DIR)/*
+	rm -rf $(OUT_DIR)/*.class
