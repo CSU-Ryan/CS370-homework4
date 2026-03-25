@@ -1,9 +1,12 @@
 public class Consumer implements Runnable {
+    // Total number of elements to consume
     final int TOTAL_CONSUMPTION = 1000000;
+    // Wait length between print updates of buffer sum
     final int UPDATE_PERIOD = 100000;
+    // Used to check that producer and consumer data match
+    double bufferValueCounter = 0;
 
     final BoundedBuffer buffer;
-    double bufferValueCounter = 0;
 
 
     public Consumer(BoundedBuffer buffer) {
@@ -14,12 +17,14 @@ public class Consumer implements Runnable {
         bufferValueCounter += commodity;
     }
 
+    /// Reads and consumes data from buffer. Will wait for buffer to have space.
     void readFromBuffer() throws InterruptedException {
         synchronized (buffer) {
             consume(buffer.read());
         }
     }
 
+    /// Prints bufferValueCounter after a printing period.
     void printUpdate(int i) {
         if (i % UPDATE_PERIOD == 0) {
             System.out.printf("Consumer: Consumed %,d items, Cumulative value of consumed items=%.3f\n",
@@ -27,6 +32,7 @@ public class Consumer implements Runnable {
         }
     }
 
+    /// Consumes number of commodities specified from buffer.
     @Override
     public void run() {
         try {
