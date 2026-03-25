@@ -1,51 +1,50 @@
 public class BoundedBuffer {
     final int BUFFER_LENGTH = 1000;
-    final double[] array = new double[BUFFER_LENGTH];
+    final double[] buffer = new double[BUFFER_LENGTH];
 
+    // Indices for where to write to/read from next
     int writeTo = 0;
     int readFrom = 0;
+
+    // Number of written buffer items which have yet to be read
     int queueLength = 0;
 
 
-    /// Used to update indices, reflecting added queue item.
+    /// Used to update indices, reflecting writing to queue.
     private void incrementQueue() {
-//        System.out.println("Buffer: Incrementing queue.");
         writeTo = (writeTo + 1) % BUFFER_LENGTH;
         queueLength++;
         notify();
     }
 
-    /// Used to update indices, reflecting removed queue item.
+    /// Used to update indices, reflecting reading from queue.
     private void decrementQueue() {
-//        System.out.println("Buffer: decrementing queue.");
         readFrom = (readFrom + 1) % BUFFER_LENGTH;
         queueLength--;
         notify();
     }
 
 
+    /// Adds data to front of queue. Will wait until queue is not full.
     public void write(double data) throws InterruptedException {
-//        System.out.printf("Buffer write: checking queue length (%d)\n", queueLength);
         while (queueLength >= BUFFER_LENGTH) {
-//            System.out.println("Buffer write: Waiting!");
+            // Waits until buffer is not full
             wait();
         }
 
-        array[writeTo] = data;
-//        System.out.printf("Buffer write: Wrote %f to %d.\n", data, writeTo);
+        buffer[writeTo] = data;
         incrementQueue();
     }
 
+    /// Reads data from back of queue. Will wait until queue is not empty.
     public double read() throws InterruptedException {
-//        System.out.printf("Buffer read: checking queue length (%d)\n", queueLength);
         while (queueLength <= 0) {
-//            System.out.println("Buffer read: Waiting!");
+            // Waits until buffer is not empty
             wait();
         }
 
-        double value = array[readFrom];
-//        System.out.printf("Buffer read: Read %f from %d.\n", value, readFrom);
+        double data = buffer[readFrom];
         decrementQueue();
-        return value;
+        return data;
     }
 }
