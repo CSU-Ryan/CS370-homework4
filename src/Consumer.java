@@ -38,5 +38,7 @@ public class Consumer implements Runnable {
             System.err.println("ERROR: thread was interrupted.");
             throw new RuntimeException(e);
         }
+
+        System.out.println("Consumer: Finished consuming 1,000,000 items");
     }
 }

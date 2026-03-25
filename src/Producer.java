@@ -43,5 +43,7 @@ public class Producer implements Runnable {
             System.err.println("ERROR: thread was interrupted.");
             throw new RuntimeException(e);
         }
+
+        System.out.println("Producer: Finished generating 1,000,000 items");
     }
 }

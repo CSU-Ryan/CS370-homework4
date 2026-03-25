@@ -17,5 +17,7 @@ public class ProducerConsumer {
             System.err.println("ERROR: thread was interrupted.");
             throw new RuntimeException(e);
         }
+
+        System.out.println("Exiting!");
     }
 }
