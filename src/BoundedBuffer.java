@@ -8,16 +8,16 @@ public class BoundedBuffer {
 
 
     /// Used to update indices, reflecting added queue item.
-    private synchronized void incrementQueue() {
         System.out.println("Buffer: Incrementing queue.");
+    private void incrementQueue() {
         writeTo = (writeTo + 1) % BUFFER_LENGTH;
         queueLength++;
         notify();
     }
 
     /// Used to update indices, reflecting removed queue item.
-    private synchronized void decrementQueue() {
         System.out.println("Buffer: decrementing queue.");
+    private void decrementQueue() {
         readFrom = (readFrom + 1) % BUFFER_LENGTH;
         queueLength--;
         notify();

@@ -2,7 +2,7 @@ public class Consumer implements Runnable {
     final int TOTAL_CONSUMPTION = 1000000;
     final int UPDATE_PERIOD = 100000;
 
-    BoundedBuffer buffer;
+    final BoundedBuffer buffer;
     double bufferValueCounter = 0;
 
 
@@ -15,7 +15,9 @@ public class Consumer implements Runnable {
     }
 
     void readFromBuffer() throws InterruptedException {
-        consume(buffer.read());
+        synchronized (buffer) {
+            consume(buffer.read());
+        }
     }
 
     void printUpdate(int i) {

@@ -5,7 +5,7 @@ public class Producer implements Runnable {
     final int UPDATE_PERIOD = 100000;
 
     final Random random = new Random();
-    BoundedBuffer buffer;
+    final BoundedBuffer buffer;
     double bufferValueCounter = 0;
 
 
@@ -20,7 +20,9 @@ public class Producer implements Runnable {
     }
 
     void writeToBuffer() throws InterruptedException {
-        buffer.write(produce());
+        synchronized (buffer) {
+            buffer.write(produce());
+        }
     }
 
     void printUpdate(int i) {
