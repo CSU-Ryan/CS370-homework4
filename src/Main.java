@@ -4,18 +4,15 @@ public class Main {
 
     public static void main(String[] args) {
         BoundedBuffer buffer = new BoundedBuffer();
-        Producer producer = new Producer(buffer);
-        Consumer consumer = new Consumer(buffer);
+        Thread producer = new Thread(new Producer(buffer));
+        Thread consumer = new Thread(new Consumer(buffer));
 
-        Thread producerThread = new Thread(producer);
-        Thread consumerThread = new Thread(consumer);
-
-        producerThread.start();
-        consumerThread.start();
+        producer.start();
+        consumer.start();
 
         try {
-            producerThread.join();
-            consumerThread.join();
+            producer.join();
+            consumer.join();
         } catch (InterruptedException e) {
             System.err.println("ERROR: thread was interrupted.");
             throw new RuntimeException(e);
