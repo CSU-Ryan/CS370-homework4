@@ -17,7 +17,7 @@ public class Producer implements Runnable {
     }
 
     double produce() {
-        double product = random.nextDouble();
+        double product = random.nextDouble() * 100.0;
         bufferValueCounter += product;
         return product;
     }
